@@ -1,0 +1,9 @@
+/* Purge all custom color/background/font/button styles so Tailwind controls everything */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Remove all custom :root, body, a, button, #root, and @media styles to let Tailwind handle all styling */
+
+/* You can add custom Tailwind classes here if needed, but keep this file minimal for full Tailwind control. */
+
