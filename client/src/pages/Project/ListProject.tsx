@@ -15,7 +15,7 @@ interface Project {
   updatedAt: string;
 }
 
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 6;
 
 const ListProject = () => {
   const [projects, setProjects] = useState<Project[]>([]);

@@ -90,11 +90,22 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-   
-    await req.prisma.project.delete({
-      where: { id }
-    });
-   
+
+    // 1. Find all issues for this project
+    const issues = await req.prisma.issue.findMany({ where: { projectId: id } });
+    const issueIds = issues.map(issue => issue.id);
+
+    // 2. Delete all comments for these issues
+    if (issueIds.length > 0) {
+      await req.prisma.comment.deleteMany({ where: { issueId: { in: issueIds } } });
+    }
+
+    // 3. Delete all issues for this project
+    await req.prisma.issue.deleteMany({ where: { projectId: id } });
+
+    // 4. Delete the project itself
+    await req.prisma.project.delete({ where: { id } });
+
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -124,4 +135,3 @@ router.patch('/:id', async (req, res) => {
 });
  
 module.exports = router;
- 
